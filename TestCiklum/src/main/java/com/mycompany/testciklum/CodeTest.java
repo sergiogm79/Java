@@ -27,9 +27,11 @@ import java.util.stream.Stream;
  */
 public class CodeTest {
     
-    public static String str1 = "Hello World!!!";
+    private static String [] numbersIn;
     
-    public static void main (String [] args) {
+    public static void main (String[] args) {
+        
+        numbersIn = args;
         
         // Exercise 1 Reverse Array
         int[] test1 = {1,3,5,7,4,11,12};
@@ -90,7 +92,7 @@ public class CodeTest {
         return res;
     }
     
-    // Split the list by blank spaces, remove all the elements in the list that doesn't match with the word to find
+    // Split the list by whitespaces, remove all the elements in the list that doesn't match with the word to find
     // using a predicate
     public static int findWordCount(String text, String wordToFind) {
         int count = 0;
@@ -122,35 +124,43 @@ public class CodeTest {
     // Method that handles a NullPointerException, the method can raise a NullPointerException
     // For testing it, remove "Hello World!" and set the str1 variable to null
     public static void handleInvalidArgument() throws NullPointerException {
-        if (str1 == null) {
-           throw new NullPointerException("str1 is null");
+        if (numbersIn == null) {
+            throw new NullPointerException("arguments are null");
+        }
+        try {
+            int[] numbersValid = IntStream.range(0, numbersIn.length).map(i-> Integer.parseInt(numbersIn[i])).toArray();
+        } catch (NumberFormatException nfe) {
+            throw new NumberFormatException("The input arguments are not numbers.");
         }
     }
     
     // Puzzle method as described in the sentence
     public static void puzzle() {
+        
+        handleInvalidArgument();
+        
         StringBuffer sb = new StringBuffer();
-        Random r = new Random();
         boolean found = false;
         int i = 0;
+        int[] listNumber = new int[0];
         
-        // Construct a list of 100 elements with random numbers between 0 and 19 
-        List<Integer> listNumber = new ArrayList<Integer>();
-        for (int j=0; j<100; j++) {
-            listNumber.add(r.nextInt(20));
+        // Get the list of numbers from input param
+        if (numbersIn!= null) {
+            listNumber = IntStream.range(0, numbersIn.length).map(j-> Integer.parseInt(numbersIn[j])).toArray();
         }
+        
         // Iterate the list looking for snap (consecutive numbers)
-        while (i<listNumber.size() && !found) {
+        while (i<listNumber.length && !found) {
             if (i>0) {
-                if (listNumber.get(i).equals(listNumber.get(i-1))) {
-                    sb.append(",").append(listNumber.get(i)).append(",snap!");
+                if (listNumber[i] == listNumber[i-1]) {
+                    sb.append(",").append(listNumber[i]).append(",snap!");
                     found = true;
                 } else {
-                    sb.append(",").append(listNumber.get(i));
+                    sb.append(",").append(listNumber[i]);
                 }
             } else {
                 // Print the first element
-                sb.append(listNumber.get(0));
+                sb.append(listNumber[0]);
             }
             i++;
         }
