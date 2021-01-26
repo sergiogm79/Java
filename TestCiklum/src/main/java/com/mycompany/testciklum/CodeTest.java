@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  */
 public class CodeTest {
     
-    private static String [] numbersIn;
+    public static String [] numbersIn;
     
     public static void main (String[] args) {
         
